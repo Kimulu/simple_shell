@@ -7,10 +7,10 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-int isInteractiveMode();
-void displayPrompt();
+int isInteractiveMode(void);
+void displayPrompt(void);
 void executeCommand(char *command);
-void handleInputError();
-void runShellScripts();
+void handleInputError(void);
+void runShellScripts(void);
 
 #endif

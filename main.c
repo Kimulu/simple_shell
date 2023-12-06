@@ -1,39 +1,45 @@
 #include "main.h"
 #include <stdio.h>
 
-int main() {
-    if (isInteractiveMode()) {
-        char *userInput = NULL;
-        size_t bufferSize = 0;
+/**
+ * main - function to control program execution
+ * Return: (0) on successful execution.
+ */
+int main(void)
+{
+	if (isInteractiveMode())
+	{
+		char *userInput = NULL;
+		size_t bufferSize = 0;
 
-        do {
-            /*Display prompt*/
-            displayPrompt();
+		do {
+			displayPrompt();
+			if (getline(&userInput, &bufferSize, stdin) == -1)
+			{
+				printf("\nProgram terminated.\n");
+				free(userInput);
+				break;
+			}
+			userInput[strcspn(userInput, "\n")] = '\0';
+			if (strlen(userInput) > 0)
+			{
+				executeCommand(userInput);
+			}
+			else
+			{
+				handleInputError();
+			}
 
-            /*Get user input using getline*/
-            if (getline(&userInput, &bufferSize, stdin) == -1) {
-                /*Handle end-of-file (Ctrl+D)*/
-                printf("\nProgram terminated.\n");
-                free(userInput);
-                break;
-            }
+		} while (1); /* Infinite loop until Ctrl+D is pressed */
 
-            userInput[strcspn(userInput, "\n")] = '\0';
+		free(userInput);
+	}
+	else
+	{
+		/* Run shell scripts for non-interactive mode */
+		runShellScripts();
+	}
 
-            /*Check if user wants to execute a command*/
-            if (strlen(userInput) > 0) {
-                executeCommand(userInput);
-            } else {
-                handleInputError();
-            }
-
-        } while (1); /*Infinite loop until Ctrl+D is pressed*/
-
-        free(userInput);
-    } else {
-        /*Run shell scripts for non-interactive mode*/
-        runShellScripts();
-    }
-
-    return 0;
+	return (0);
 }
+

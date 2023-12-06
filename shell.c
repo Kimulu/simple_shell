@@ -5,98 +5,109 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-extern char **environ;
-
-/*Function to display a prompt for the user in interactive mode*/
-void displayPrompt() {
-    printf("$ "); /*Customize the prompt as needed*/
-    fflush(stdout); /*Ensure the prompt is displayed immediately*/
+/**
+ * displayPrompt - Displays a prompt for the user in interactive mode.
+ */
+void displayPrompt(void)
+{
+	printf("$ ");
+	fflush(stdout);
 }
 
-int isInteractiveMode() {
-    return isatty(fileno(stdin));
+/**
+ * isInteractiveMode - Checks if the program is in interactive mode.
+ * Return: 1 if in interactive mode, 0 otherwise.
+ */
+int isInteractiveMode(void)
+{
+	return (isatty(fileno(stdin)));
 }
 
-/* Function to execute the provided command */
-void executeCommand(char *command) {
-    /* Tokenize the input to get the first word as the command */
-    char *token = strtok(command, " ");
+/**
+ * executeCommand - Executes the provided command.
+ * @command: The command to be executed.
+ */
+void executeCommand(char *command)
+{
+	pid_t pid;
+	char *token = strtok(command, " ");
 
-    if (token != NULL) {
-        /* Create a child process */
-        pid_t pid = fork();
+	if (token == NULL)
+	{
+		handleInputError();
+		return;
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		char **args = malloc(2 * sizeof(char *));
 
-        if (pid == 0) {
-            /* Child process */
-            char **args = malloc(2 * sizeof(char *));
-            if (args == NULL) {
-                perror("Error allocating memory");
-                _exit(EXIT_FAILURE);
-            }
+		if (args == NULL)
+		{
+			perror("Error allocating memory");
+			_exit(EXIT_FAILURE);
+		}
+		args[0] = token;
+		args[1] = NULL;
+		execvp(token, args);
+		perror("Error");
+		_exit(EXIT_FAILURE);
+	}
+	else if (pid > 0)
+	{
+		int status;
 
-            args[0] = token;
-            args[1] = NULL;
+		waitpid(pid, &status, 0);
+		if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
+			printf("Command failed\n");
 
-            /* Execute the command using execvp */
-            if (execvp(token, args) == -1) {
-                /* Handle command not found */
-                perror("Error");
-                _exit(EXIT_FAILURE);
-            }
-
-            free(args);
-        } else if (pid > 0) {
-            /* Parent process */
-            int status;
-            waitpid(pid, &status, 0);
-
-            if (WIFEXITED(status)) {
-                printf("Command executed successfully with exit status %d\n", WEXITSTATUS(status));
-            } else {
-                printf("Command execution failed\n");
-            }
-        } else {
-            /* Fork error */
-            perror("Fork error");
-        }
-    } else {
-        handleInputError(); /* Handle the case where no command is provided */
-    }
+		fflush(stdout);
+	}
+	else
+	{
+		perror("Fork error");
+	}
 }
 
-/*Function to handle input error and prompt the user to continue*/
-void handleInputError() {
-    printf("Error: Invalid input. Please try again.\n");
+/**
+ * handleInputError - Handles input error and prompts the user to continue.
+ */
+void handleInputError(void)
+{
+	printf("Error: Invalid input. Please try again.\n");
 }
 
-/*Function to run shell scripts in non-interactive mode*/
-void runShellScripts() {
-    /*Placeholder logic for running shell scripts*/
-    /*For example, you can run a specific script or commands*/
+/**
+ * runShellScripts - Runs shell scripts in non-interactive mode.
+ */
+void runShellScripts(void)
+{
+	pid_t pid = fork();
 
-    pid_t pid = fork();
+	if (pid == 0)
+	{
+		char *scriptPath = "/path/to/your/script.sh";
 
-    if (pid == 0) {
-        
-        char *scriptPath = "/path/to/your/script.sh";
+		if (execlp("sh", "sh", scriptPath, NULL) == -1)
+		{
+			perror("Error executing shell script");
+			_exit(EXIT_FAILURE);
+		}
+	}
+	else if (pid > 0)
+	{
+		int status;
 
-        
-        if (execlp("sh", "sh", scriptPath, NULL) == -1) {
-            perror("Error executing shell script");
-            _exit(EXIT_FAILURE);
-        }
-    } else if (pid > 0) {
-        
-        int status;
-        waitpid(pid, &status, 0);
+		waitpid(pid, &status, 0);
 
-        if (WIFEXITED(status)) {
-            printf("Shell script executed successfully with exit status %d\n", WEXITSTATUS(status));
-        } else {
-            printf("Shell script execution failed\n");
-        }
-    } else {
-        
-        perror("Fork error");
-    }
+		if (WIFEXITED(status))
+			printf("executed success with exit status %d\n", WEXITSTATUS(status));
+		else
+			printf("Shell script execution failed\n");
+	}
+	else
+	{
+		perror("Fork error");
+	}
 }
+
