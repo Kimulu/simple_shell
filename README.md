@@ -3,10 +3,8 @@ This repo is all about a basic version of a shell program that can handle comman
 ***PSEUDO CODE FOR SIMPLE SHELL PROJECT***
 
 function isInteractiveMode():
-/*
- Logic to determine if the program is running in interactive mode
- Return true if interactive, false if non-interactive
- */
+*Logic to determine if the program is running in interactive mode
+ Return true if interactive, false if non-interactive*
 
 function displayPrompt():
 /*Display a prompt for the user in interactive mode*/
