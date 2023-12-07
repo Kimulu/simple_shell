@@ -7,49 +7,49 @@ function isInteractiveMode():
  Return true if interactive, false if non-interactive*
 
 function displayPrompt():
-/*Display a prompt for the user in interactive mode*/
+*Display a prompt for the user in interactive mode*
 
 function executeCommand(command):
-/*Execute the provided command*/
+*Execute the provided command*
 
 function handleInputError():
-/*Handle input error and prompt the user to continue*/
+*Handle input error and prompt the user to continue*
 
 function main():
 	if isInteractiveMode():
 		displayPrompt()
 		try:
-			while True:
-/*Get user input*/										                userInput = getInput() 
+		    while True:
+                   *Get user input* 
+                   userInput = getInput() 
 
-/*Check if user wants to execute a command*/
+*Check if user wants to execute a command*
 	if isValidCommand(userInput):
 		executeCommand(userInput)
 		else:
 			handleInputError()
 
-		except KeyboardInterrupt:
-/*Handle Ctrl+C, program exits gracefully*/
+except KeyboardInterrupt:
+*Handle Ctrl+C, program exits gracefully*
 		print("\nProgram terminated.")
 		else:
-/*Run shell scripts for non-interactive mode*/ 
+*Run shell scripts for non-interactive mode* 
 runShellScripts()
 
-/*Helper functions*/
+*Helper functions*
 function getInput():
-  /*Get user input from the prompt*/
+  *Get user input from the prompt*
 	return input("Enter a command: ")
 
 function isValidCommand(command):
-/*
-  Check if the entered command is valid
-  You can customize this based on your specific commands
-  */
-	return True if command is valid else False
+
+  *Check if the entered command is valid
+  You can customize this based on your specific commands*
+  return True if command is valid else False
 
 function runShellScripts():
-  /*Logic to run shell scripts in non-interactive mode*/
+  *Logic to run shell scripts in non-interactive mode*
 
-/*Start the program*/
+*Start the program*
 main()
 
