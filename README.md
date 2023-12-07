@@ -16,7 +16,7 @@ function handleInputError():
 *Handle input error and prompt the user to continue*
 
 function main():
-	if isInteractiveMode():
+if isInteractiveMode():
 		displayPrompt()
 		try:
 		    while True:
