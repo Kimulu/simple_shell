@@ -1,45 +1,52 @@
 #include "main.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-/**
- * main - function to control program execution
- * Return: (0) on successful execution.
- */
-int main(void)
-{
-	if (isInteractiveMode())
-	{
-		char *userInput = NULL;
-		size_t bufferSize = 0;
+#define MAX_ARGS 100
 
-		do {
-			displayPrompt();
-			if (getline(&userInput, &bufferSize, stdin) == -1)
-			{
-				printf("\nProgram terminated.\n");
-				free(userInput);
-				break;
-			}
-			userInput[strcspn(userInput, "\n")] = '\0';
-			if (strlen(userInput) > 0)
-			{
-				executeCommand(userInput);
-			}
-			else
-			{
-				handleInputError();
-			}
+void processInteractiveMode() {
+    char *userInput = NULL;
+    size_t bufferSize = 0;
 
-		} while (1); /* Infinite loop until Ctrl+D is pressed */
+    while (1) {
+        displayPrompt();
+        if (getline(&userInput, &bufferSize, stdin) == -1) {
+            printf("\nProgram terminated.\n");
+            free(userInput);
+            break;
+        }
 
-		free(userInput);
-	}
-	else
-	{
-		/* Run shell scripts for non-interactive mode */
-		runShellScripts();
-	}
+        userInput[strcspn(userInput, "\n")] = '\0';
+        if (strlen(userInput) > 0) {
+            char *command = strtok(userInput, " ");
+            char *args[MAX_ARGS] = {NULL};
+            for (int j = 0; (args[j] = strtok(NULL, " ")) != NULL; j++);
 
-	return (0);
+            executeCommand(command, args);
+        } else {
+            handleInputError();
+        }
+    }
+}
+
+void processNonInteractiveMode(int argc, char *argv[]) {
+    for (int i = 1; i < argc; i++) {
+        char *command = strtok(argv[i], " ");
+        char *args[MAX_ARGS] = {NULL};
+        for (int j = 0; (args[j] = strtok(NULL, " ")) != NULL; j++);
+
+        executeCommand(command, args);
+    }
+}
+
+int main(int argc, char *argv[]) {
+    if (argc > 1) {
+        processNonInteractiveMode(argc, argv);
+    } else {
+        processInteractiveMode();
+    }
+
+    return 0;
 }
 
