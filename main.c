@@ -5,8 +5,6 @@
 
 #define MAX_ARGS 100
 
-
-
 void processInteractiveMode() {
     char *userInput = NULL;
     size_t bufferSize = 0;
@@ -23,16 +21,12 @@ void processInteractiveMode() {
         if (strlen(userInput) > 0) {
             char *command = strtok(userInput, " ");
             char *args[MAX_ARGS] = {NULL};
-            for (int j = 0; (args[j] = strtok(NULL, " ")) != NULL; j++);
-
-            if (args[0] != NULL && strcmp(args[0], "&&") == 0) {
-                // Handle the case where the second command is related to the first
-                char *commands[] = {command, args[1], NULL};
-                executeCommandSequence(commands, args + 2);
-            } else {
-                char *commands[] = {command, NULL};
-                executeCommandSequence(commands, args);
+            int j = 0;
+            while ((args[j] = strtok(NULL, " ")) != NULL) {
+                j++;
             }
+
+            executeCommand(command, args);
         } else {
             handleInputError();
         }
@@ -40,13 +34,17 @@ void processInteractiveMode() {
 }
 
 void processNonInteractiveMode(int argc, char *argv[]) {
-    for (int i = 1; i < argc; i++) {
+    int i = 1;
+    while (i < argc) {
         char *command = strtok(argv[i], " ");
         char *args[MAX_ARGS] = {NULL};
-        for (int j = 0; (args[j] = strtok(NULL, " ")) != NULL; j++);
+        int j = 0;
+        while ((args[j] = strtok(NULL, " ")) != NULL) {
+            j++;
+        }
 
-        char *commands[] = {command, NULL};
-        executeCommandSequence(commands, args);
+        executeCommand(command, args);
+        i++;
     }
 }
 
