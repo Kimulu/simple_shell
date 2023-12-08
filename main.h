@@ -11,6 +11,6 @@ int isInteractiveMode(void);
 void displayPrompt(void);
 void executeCommand(char *command, char *args[]);
 void handleInputError(void);
-void runShellScripts(void);
+void executeCommandSequence(char *commands[], char *args[]);
 
 #endif

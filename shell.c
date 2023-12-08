@@ -28,23 +28,18 @@ int isInteractiveMode(void)
  * @command: The command to be executed.
  */
 
-void executeCommand(char *command, char *args[])
-{
+void executeCommand(char *command, char *args[]) {
     pid_t pid = fork();
 
-    if (pid == 0)
-    {
-        /*Handle PATH*/
-        if (strchr(command, '/') == NULL)
-        {
+    if (pid == 0) {
+        if (strchr(command, '/') == NULL) {
+            // Handle PATH
             char *path = getenv("PATH");
             char *token = strtok(path, ":");
 
-            while (token != NULL)
-            {
+            while (token != NULL) {
                 char *fullPath = malloc(strlen(token) + strlen(command) + 2);
-                if (fullPath == NULL)
-                {
+                if (fullPath == NULL) {
                     perror("Error allocating memory");
                     _exit(EXIT_FAILURE);
                 }
@@ -53,39 +48,37 @@ void executeCommand(char *command, char *args[])
                 strcat(fullPath, "/");
                 strcat(fullPath, command);
 
-                printf("Attempting to execute: %s\n", fullPath);
-
                 execv(fullPath, args);
 
                 free(fullPath);
                 token = strtok(NULL, ":");
             }
 
-            /*If we reach here, the command was not found in any PATH directories*/
             perror("Command not found");
             _exit(EXIT_FAILURE);
-        }
-        else
-        {
+        } else {
             printf("Attempting to execute: %s\n", command);
             execv(command, args);
             perror("Error");
             _exit(EXIT_FAILURE);
         }
-    }
-    else if (pid > 0)
-    {
+    } else if (pid > 0) {
         int status;
         waitpid(pid, &status, 0);
         if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
             printf("Command failed\n");
-    }
-    else
-    {
+    } else {
         perror("Fork error");
     }
 }
 
+void executeCommandSequence(char *commands[], char *args[]) {
+    int i = 0;
+    while (commands[i] != NULL) {
+        executeCommand(commands[i], args);
+        i++;
+    }
+}
 
 /**
  * handleInputError - Handles input error and prompts the user to continue.
@@ -93,39 +86,5 @@ void executeCommand(char *command, char *args[])
 void handleInputError(void)
 {
     printf("Error: Invalid input. Please try again.\n");
-}
-
-/**
- * runShellScripts - Runs shell scripts in non-interactive mode.
- */
-void runShellScripts(void)
-{
-    pid_t pid = fork();
-
-    if (pid == 0)
-    {
-        char *scriptPath = "~/Desktop/hsh";
-
-        if (execlp("sh", "sh", scriptPath, NULL) == -1)
-        {
-            perror("Error executing shell script");
-            _exit(EXIT_FAILURE);
-        }
-    }
-    else if (pid > 0)
-    {
-        int status;
-
-        waitpid(pid, &status, 0);
-
-        if (WIFEXITED(status))
-            printf("executed success with exit status %d\n", WEXITSTATUS(status));
-        else
-            printf("Shell script execution failed\n");
-    }
-    else
-    {
-        perror("Fork error");
-    }
 }
 

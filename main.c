@@ -5,6 +5,8 @@
 
 #define MAX_ARGS 100
 
+
+
 void processInteractiveMode() {
     char *userInput = NULL;
     size_t bufferSize = 0;
@@ -23,7 +25,14 @@ void processInteractiveMode() {
             char *args[MAX_ARGS] = {NULL};
             for (int j = 0; (args[j] = strtok(NULL, " ")) != NULL; j++);
 
-            executeCommand(command, args);
+            if (args[0] != NULL && strcmp(args[0], "&&") == 0) {
+                // Handle the case where the second command is related to the first
+                char *commands[] = {command, args[1], NULL};
+                executeCommandSequence(commands, args + 2);
+            } else {
+                char *commands[] = {command, NULL};
+                executeCommandSequence(commands, args);
+            }
         } else {
             handleInputError();
         }
@@ -36,7 +45,8 @@ void processNonInteractiveMode(int argc, char *argv[]) {
         char *args[MAX_ARGS] = {NULL};
         for (int j = 0; (args[j] = strtok(NULL, " ")) != NULL; j++);
 
-        executeCommand(command, args);
+        char *commands[] = {command, NULL};
+        executeCommandSequence(commands, args);
     }
 }
 
