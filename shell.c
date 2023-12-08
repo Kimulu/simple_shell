@@ -29,7 +29,7 @@ void executeCommand(char *command, char *args[])
 
     if (pid == 0)
     {
-        /*Handle PATH*/
+        // Handle PATH
         if (strchr(command, '/') == NULL)
         {
             char *path = getenv("PATH");
@@ -56,14 +56,13 @@ void executeCommand(char *command, char *args[])
                 token = strtok(NULL, ":");
             }
 
-            /*If we reach here, the command was not found in any PATH directories*/
+            // If we reach here, the command was not found in any PATH directories
             perror("Command not found");
             _exit(EXIT_FAILURE);
         }
         else
         {
             printf("Attempting to execute: %s\n", command);
-	    asm("cdq");
             execv(command, args);
             perror("Error");
             _exit(EXIT_FAILURE);
@@ -81,7 +80,6 @@ void executeCommand(char *command, char *args[])
         perror("Fork error");
     }
 }
-
 /**
  * handleInputError - Handles input error and prompts the user to continue.
  */
