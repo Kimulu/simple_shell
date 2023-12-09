@@ -7,10 +7,10 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-int isInteractiveMode(void);
-void displayPrompt(void);
-void executeCommand(char *command, char *args[]);
-void handleInputError(void);
-void runShellScripts(void);
+#define MAX_INPUT 1024
+
+void execute_command(char *command);
+void interactive_mode();
+void batch_mode(FILE *file);
 
 #endif
