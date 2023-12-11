@@ -1,60 +1,71 @@
 #include "main.h"
 
-void execute_command(char *command) {
-    pid_t pid;
-    int status;
+/**
+* show_prompt - prints the prompt to the screen.
+* Returns nothing and takes no arguments
+*/
+void show_prompt(void)
+{
+char buf[] = "$ ";
+ssize_t bytes_written;
 
-    pid = fork();
-
-    if (pid == 0) { // Child process
-        char *args[] = {command, NULL};
-        if (execve(args[0], args) == -1) {
-            perror("hsh");
-        }
-        exit(EXIT_FAILURE);
-    } else if (pid < 0) {
-        perror("hsh");
-    } else { // Parent process
-        waitpid(pid, &status, 0);
-    }
+bytes_written = write(STDOUT_FILENO, buf, strlen(buf));
+if (bytes_written == -1)
+{
+perror("write");
+exit(EXIT_FAILURE);
+}
 }
 
-void interactive_mode() {
-    char *input = NULL;
-    size_t len = 0;
+/**
+* read_input - reads the input from the user
+* @line_command: pointer to the command line input
+* @length: pointer to the length of the input line
+* Return: the number of bytes read
+*/
 
-    while (1) {
-        printf("$ ");
-        if (getline(&input, &len, stdin) == -1) {
-            perror("hsh");
-            exit(EXIT_FAILURE);
-        }
+ssize_t read_input(char **line_command, size_t *length)
+{
+ssize_t input;
 
-        // Remove newline character
-        input[strcspn(input, "\n")] = '\0';
-
-        if (strcmp(input, "exit") == 0) {
-            free(input);
-            exit(EXIT_SUCCESS);
-        }
-
-        execute_command(input);
-
-        free(input);
-    }
+input = getline(line_command, length, stdin);
+return (input);
 }
 
-void batch_mode(FILE *file) {
-    char *input = NULL;
-    size_t len = 0;
+/**
+* getline_errors - handles getline errors
+* @read_characters: number of bytes read
+* @line_pointer: pointer to the command line input
+*/
 
-    while (getline(&input, &len, file) != -1) {
-        // Remove newline character
-        input[strcspn(input, "\n")] = '\0';
-
-        execute_command(input);
-    }
-
-    free(input);
+void getline_errors(ssize_t read_characters, char *line_pointer)
+{
+if (read_characters == -1)
+{
+free(line_pointer);
+line_pointer = NULL;
+if (isatty(STDIN_FILENO))
+printf("\n");
+exit(0);
+}
 }
 
+/**
+* remove_newline - removes the newline character from the command line
+* @command_line: pointer to the command line input
+* @read_characters: number of bytes read
+*/
+
+void remove_newline(char *command_line, ssize_t read_characters)
+{
+int i;
+
+for (i = 0; i < read_characters; i++)
+{
+if (command_line[i] == '\n')
+{
+command_line[i] = '\0';
+break;
+}
+}
+}
