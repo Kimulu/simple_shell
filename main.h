@@ -11,7 +11,7 @@
 
 #define MAX_INPUT 1024
 
-extern char **environ; 
+extern char **environ;
 void deallocate_tokens(char **tokens);
 char **tokenize_command(char *str, const char *d);
 void find_path(char **pathname);
