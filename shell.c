@@ -8,7 +8,7 @@ void execute_command(char *command) {
 
     if (pid == 0) { // Child process
         char *args[] = {command, NULL};
-        if (execvp(args[0], args) == -1) {
+        if (execve(args[0], args) == -1) {
             perror("hsh");
         }
         exit(EXIT_FAILURE);
