@@ -69,3 +69,19 @@ break;
 }
 }
 }
+
+/**
+* _printenv - prints current environment
+* Returns nothings and takes no arguments
+*/
+
+void _printenv(void)
+{
+unsigned int i;
+
+while (environ[i] != NULL)
+{
+printf("%s\n", environ[i]);
+i++;
+}
+}
