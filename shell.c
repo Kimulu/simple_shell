@@ -77,7 +77,7 @@ break;
 
 void _printenv(void)
 {
-unsigned int i;
+unsigned int i = 0;
 
 while (environ[i] != NULL)
 {
