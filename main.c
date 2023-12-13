@@ -1,25 +1,14 @@
 #include "main.h"
 
 /**
-<<<<<<< HEAD
  * print_prompt - Print shell prompt.
  */
 void print_prompt(void)
-=======
-* main - main entry point
-* @argc: argument count
-* @argv: command line arguments
-* Return: 0
-*/
-
-int main(int argc, char *argv[])
->>>>>>> 5bada745feb483f0c12735b6b025455aa93994e8
 {
     if (isatty(STDIN_FILENO))
         printf("Shell-Prompt> ");
 }
 
-<<<<<<< HEAD
 /**
  * handle_exit - Handle the exit command.
  * @line: Input line.
@@ -41,20 +30,6 @@ bool handle_exit(char *line)
  * @argv: Command line arguments.
  */
 void process_command(char *line, size_t counter, char *argv[])
-=======
-while (true)
-{
-if (isatty(STDIN_FILENO))
-show_prompt();
-fflush(stdout);
-char_read = read_input(&pointer_to_line, &line_size);
-++counter;
-getline_errors(char_read, pointer_to_line);
-remove_newline(pointer_to_line, char_read);
-if (*pointer_to_line == '\0')
-continue;
-if (strcmp(pointer_to_line, "exit") == 0)
->>>>>>> 5bada745feb483f0c12735b6b025455aa93994e8
 {
     char **tokens;
 
@@ -69,7 +44,6 @@ if (strcmp(pointer_to_line, "exit") == 0)
     free(line);
     deallocate_tokens(tokens);
 }
-<<<<<<< HEAD
 
 /**
  * main - Main entry point.
@@ -78,17 +52,6 @@ if (strcmp(pointer_to_line, "exit") == 0)
  * Return: 0.
  */
 int main(int argc __attribute__((unused)), char *argv[])
-=======
-if (argc > 1 && strcmp(argv[1], "env") == 0)
-_printenv();
-command_tokens = tokenize_command(pointer_to_line, " ");
-if (command_tokens == NULL)
-continue;
-if (access(command_tokens[0], X_OK) == -1)
-{
-find_path(&command_tokens[0]);
-if (command_tokens != NULL && access(command_tokens[0], X_OK) == -1)
->>>>>>> 5bada745feb483f0c12735b6b025455aa93994e8
 {
     char *line = NULL;
     size_t size = 0, counter = 0;
