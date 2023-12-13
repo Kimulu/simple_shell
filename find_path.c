@@ -28,7 +28,7 @@ temp_path = malloc(sizeof(char) * (strlen(*full_path) +
 strlen(directory_tokens[i]) + 2));
 if (temp_path == NULL)
 {
-fprintf(stderr, "Memory alloaction failed\n");
+fprintf(stderr, "Memory allocation failed\n");
 return;
 }
 strcpy(temp_path, directory_tokens[i]);
