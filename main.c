@@ -5,8 +5,8 @@
  */
 void print_prompt(void)
 {
-    if (isatty(STDIN_FILENO))
-        printf("$ ");
+if (isatty(STDIN_FILENO))
+printf("$ ");
 }
 
 /**
@@ -16,12 +16,12 @@ void print_prompt(void)
  */
 bool handle_exit(char *line)
 {
-    if (strcmp(line, "exit") == 0)
-    {
-        free(line);
-        return true;
-    }
-    return false;
+if (strcmp(line, "exit") == 0)
+{
+free(line);
+return (true);
+}
+return (false);
 }
 
 /**
@@ -32,18 +32,33 @@ bool handle_exit(char *line)
  */
 void process_command(char *line, size_t counter, char *argv[])
 {
-    char **tokens;
+char **tokens;
 
-    if (*line == '\0' || !(tokens = tokenize_command(line, " ")))
-        return;
+tokens = tokenize_command(line, " ");
+if (*line == '\0' || tokens == NULL)
+{
+free(line);
+if (tokens != NULL)
+deallocate_tokens(tokens);
+return;
+}
 
-    if (access(tokens[0], X_OK) == -1 && (find_path(&tokens[0]), access(tokens[0], X_OK) == -1))
-        fprintf(stderr, "%s: %lu: %s: not found\n", argv[0], counter, tokens[0]);
-    else
-        execute_command(tokens);
+if (access(tokens[0], X_OK) == -1)
+{
+find_path(&tokens[0]);
+if (access(tokens[0], X_OK) == -1)
+{
+fprintf(stderr, "%s: %lu: %s: not found\n", argv[0], counter, tokens[0]);
+free(line);
+deallocate_tokens(tokens);
+return;
+}
+}
 
-    free(line);
-    deallocate_tokens(tokens);
+execute_command(tokens);
+
+free(line);
+deallocate_tokens(tokens);
 }
 
 /**
@@ -54,24 +69,23 @@ void process_command(char *line, size_t counter, char *argv[])
  */
 int main(int argc __attribute__((unused)), char *argv[])
 {
-    char *line = NULL;
-    size_t size = 0, counter = 0;
-    ssize_t read_chars;
+char *line = NULL;
+size_t size = 0, counter = 0;
+ssize_t read_chars;
 
-    while (true)
-    {
-        print_prompt();
-        fflush(stdout);
+while (true)
+{
+print_prompt();
+fflush(stdout);
 
-        read_chars = read_input(&line, &size);
-        getline_errors(read_chars, line);
-        remove_newline(line, read_chars);
+read_chars = read_input(&line, &size);
+getline_errors(read_chars, line);
+remove_newline(line, read_chars);
 
-        if (handle_exit(line))
-            return 0;
+if (handle_exit(line))
+return (0);
 
-        process_command(line, ++counter, argv);
-        line = NULL;
-    }
+process_command(line, ++counter, argv);
+line = NULL;
 }
-
+}
