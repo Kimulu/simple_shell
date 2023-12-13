@@ -46,7 +46,7 @@ free(line_pointer);
 line_pointer = NULL;
 if (isatty(STDIN_FILENO))
 printf("\n");
-exit(0);
+exit(126);
 }
 }
 
