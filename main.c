@@ -6,12 +6,13 @@
 void print_prompt(void)
 {
     if (isatty(STDIN_FILENO))
-        printf("Shell-Prompt> ");
+        printf("$ ");
 }
 
 /**
  * handle_exit - Handle the exit command.
  * @line: Input line.
+ * Return: true if command is exit
  */
 bool handle_exit(char *line)
 {
