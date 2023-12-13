@@ -6,7 +6,7 @@
 void print_prompt(void)
 {
 if (isatty(STDIN_FILENO))
-printf("#cisfun$ ");
+printf$ ");
 }
 
 /**
