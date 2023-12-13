@@ -6,7 +6,7 @@
 void print_prompt(void)
 {
 if (isatty(STDIN_FILENO))
-printf$ ");
+printf("$ ");
 }
 
 /**
@@ -88,4 +88,5 @@ return (0);
 process_command(line, ++counter, argv);
 line = NULL;
 }
+return (0);
 }
