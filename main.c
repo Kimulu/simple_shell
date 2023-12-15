@@ -1,12 +1,12 @@
 #include "main.h"
 
 /**
- * print_prompt - Print shell prompt.
- */
+* print_prompt - Print shell prompt.
+*/
 void print_prompt(void)
 {
 if (isatty(STDIN_FILENO))
-printf("($) ");
+printf("$ ");
 }
 
 /**
@@ -25,11 +25,11 @@ return (false);
 }
 
 /**
- * process_command - Process the entered command.
- * @line: Input line.
- * @counter: Command counter.
- * @argv: Command line arguments.
- */
+* process_command - Process the entered command.
+* @line: Input line.
+* @counter: Command counter.
+* @argv: Command line arguments.
+*/
 void process_command(char *line, size_t counter, char *argv[])
 {
 char **tokens;
@@ -62,18 +62,18 @@ deallocate_tokens(tokens);
 }
 
 /**
- * main - Main entry point.
- * @argc: Argument count.
- * @argv: Command line arguments.
- * Return: 0.
- */
-int main(int argc __attribute__((unused)), char *argv[])
+* main - Main entry point.
+* @argc: Argument count.
+* @argv: Command line arguments.
+* Return: 0.
+*/
+int main(int argc, char *argv[])
 {
 char *line = NULL;
 size_t size = 0, counter = 0;
 ssize_t read_chars;
 
-while (true)
+while (1)
 {
 print_prompt();
 fflush(stdout);
@@ -84,6 +84,11 @@ remove_newline(line, read_chars);
 
 if (handle_exit(line))
 return (0);
+
+if (argc > 1 && strcmp(argv[1], "env") == 0)
+{
+_printenv();
+}
 
 process_command(line, ++counter, argv);
 line = NULL;
