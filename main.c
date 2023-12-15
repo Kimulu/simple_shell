@@ -78,8 +78,6 @@ while (1)
 print_prompt();
 fflush(stdout);
 
-if (argc == 1 && strcmp(argv[0], "./hsh") == 0)
-return (0);
 
 read_chars = read_input(&line, &size);
 getline_errors(read_chars, line);
