@@ -78,7 +78,6 @@ while (1)
 print_prompt();
 fflush(stdout);
 
-
 read_chars = read_input(&line, &size);
 getline_errors(read_chars, line);
 remove_newline(line, read_chars);
