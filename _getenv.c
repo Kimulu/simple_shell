@@ -25,6 +25,7 @@ if (value == NULL)
 return (NULL);
 }
 path = (value + 1);
+free(path_copy);
 path_copy = strdup(path);
 return (path_copy);
 }
