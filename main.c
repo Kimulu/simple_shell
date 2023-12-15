@@ -89,6 +89,7 @@ return (0);
 if (argc > 1 && strcmp(argv[1], "env") == 0)
 {
 _printenv(environ);
+continue;
 }
 
 process_command(line, ++counter, argv);
