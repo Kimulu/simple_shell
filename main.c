@@ -34,7 +34,7 @@ void process_command(char *line, size_t counter, char *argv[])
 {
 char **tokens;
 
-tokens = tokenize_command(line, " ");
+tokens = tokenize_command(line, " \t\n");
 if (*line == '\0' || tokens == NULL)
 {
 free(line);
