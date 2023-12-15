@@ -35,7 +35,7 @@ void process_command(char *line, size_t counter, char *argv[])
 char **tokens;
 
 tokens = tokenize_command(line, " \t\n");
-if (*line == '\0' || tokens == NULL)
+if (*line == '\0' || tokens == NULL || *tokens == NULL)
 {
 free(line);
 if (tokens != NULL)
@@ -46,7 +46,7 @@ return;
 if (access(tokens[0], X_OK) == -1)
 {
 find_path(&tokens[0]);
-if (access(tokens[0], X_OK) == -1)
+if (tokens != NULL && access(tokens[0], X_OK) == -1)
 {
 fprintf(stderr, "%s: %lu: %s: not found\n", argv[0], counter, tokens[0]);
 free(line);
@@ -78,6 +78,7 @@ while (1)
 print_prompt();
 fflush(stdout);
 
+
 read_chars = read_input(&line, &size);
 getline_errors(read_chars, line);
 remove_newline(line, read_chars);
@@ -87,7 +88,7 @@ return (0);
 
 if (argc > 1 && strcmp(argv[1], "env") == 0)
 {
-_printenv();
+_printenv(environ);
 }
 
 process_command(line, ++counter, argv);

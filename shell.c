@@ -69,16 +69,16 @@ break;
 
 /**
 * _printenv - prints current environment
-* Returns nothings and takes no arguments
+* @env_var: the environment variable to print
 */
 
-void _printenv(void)
+void _printenv(char **env_var)
 {
 unsigned int i = 0;
 
-while (environ[i] != NULL)
+while (env_var[i] != NULL)
 {
-printf("%s\n", environ[i]);
+printf("%s\n", env_var[i]);
 i++;
 }
 }

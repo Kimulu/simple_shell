@@ -15,7 +15,7 @@ int i = 0;
 if (*full_path == NULL || full_path == NULL)
 return;
 
-get_path_variable = _getenv("PATH");
+get_path_variable = getenv("PATH");
 if (get_path_variable  == NULL)
 return;
 directory_tokens = tokenize_command(get_path_variable, ":");
