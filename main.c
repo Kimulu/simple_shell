@@ -35,7 +35,7 @@ void process_command(char *line, size_t counter, char *argv[])
 char **tokens;
 
 tokens = tokenize_command(line, " \t\n");
-if (tokens || tokens == NULL)
+if (*line == '\0' || tokens == NULL || *tokens == NULL)
 {
 free(line);
 if (tokens != NULL)
@@ -88,7 +88,7 @@ return (0);
 
 if (argc > 1 && strcmp(argv[1], "env") == 0)
 {
-_printenv();
+_printenv(environ);
 }
 
 process_command(line, ++counter, argv);
