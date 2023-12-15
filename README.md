@@ -31,7 +31,7 @@ if isInteractiveMode():
 
 except KeyboardInterrupt:
 *Handle Ctrl+C, program exits gracefully*
-		print("\nProgram terminated.")
+		print("Program terminated.")
 		else:
 *Run shell scripts for non-interactive mode* 
 runShellScripts()

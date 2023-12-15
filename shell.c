@@ -10,12 +10,25 @@
 
 ssize_t read_input(char **line_command, size_t *length)
 {
-ssize_t input;
+    ssize_t input;
 
-input = getline(line_command, length, stdin);
-return (input);
+    input = getline(line_command, length, stdin);
+
+
+    if (input == -1 || feof(stdin)) {
+        free(*line_command);    /* Free the memory allocated by getline*/
+        *line_command = NULL;   /* Set the pointer to NULL after freeing*/
+
+        /* Handle other error conditions if needed*/
+        if (feof(stdin)) {
+            /* End-of-file handling, if necessary*/
+        } else {
+            perror("getline");   /* Print an error message if getline fails*/
+        }
+    }
+
+    return input;
 }
-
 /**
 * getline_errors - handles getline errors
 * @read_characters: number of bytes read

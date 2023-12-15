@@ -93,5 +93,6 @@ _printenv();
 process_command(line, ++counter, argv);
 line = NULL;
 }
+free(line);
 return (0);
 }
