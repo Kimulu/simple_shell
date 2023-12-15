@@ -36,7 +36,7 @@ except KeyboardInterrupt:
 *Run shell scripts for non-interactive mode* 
 runShellScripts()
 
-*Helper functions*
+*Helper  functions*
 function getInput():
   *Get user input from the prompt*
 	return input("Enter a command: ")
