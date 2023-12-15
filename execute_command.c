@@ -19,7 +19,7 @@ if (access(tokens[0], X_OK) == 0)
 if (execve(tokens[0], tokens, environ) == -1)
 {
 perror("1");
-exit(2);
+exit(EXIT_FAILURE);
 }
 }
 }
@@ -29,7 +29,7 @@ else if (command_pid == -1)
 perror("2");
 free(tokens);
 tokens = NULL;
-exit(2);
+exit(EXIT_FAILURE);
 }
 else
 {
