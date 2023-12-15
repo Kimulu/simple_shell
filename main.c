@@ -35,7 +35,7 @@ void process_command(char *line, size_t counter, char *argv[])
 char **tokens;
 
 tokens = tokenize_command(line, " \t\n");
-if (*line == '\0' || tokens == NULL)
+if (tokens || tokens == NULL)
 {
 free(line);
 if (tokens != NULL)
@@ -46,7 +46,7 @@ return;
 if (access(tokens[0], X_OK) == -1)
 {
 find_path(&tokens[0]);
-if (access(tokens[0], X_OK) == -1)
+if (tokens != NULL && access(tokens[0], X_OK) == -1)
 {
 fprintf(stderr, "%s: %lu: %s: not found\n", argv[0], counter, tokens[0]);
 free(line);
