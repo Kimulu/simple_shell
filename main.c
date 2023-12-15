@@ -78,6 +78,9 @@ while (1)
 print_prompt();
 fflush(stdout);
 
+if (argc <= 1)
+return (0);
+
 read_chars = read_input(&line, &size);
 getline_errors(read_chars, line);
 remove_newline(line, read_chars);
