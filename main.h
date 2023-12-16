@@ -22,6 +22,7 @@ void _printenv(char **env_var);
 void process_command(char *line, size_t counter, char *argv[]);
 void print_prompt(void);
 bool handle_exit(char *line);
+char *_strtok(char *string, const char *dm);
 
 
 #endif

@@ -23,7 +23,7 @@ perror("malloc");
 exit(EXIT_FAILURE);
 }
 
-token = strtok(command, d);
+token = _strtok(command, d);
 while (token != NULL)
 {
 /*save a copy of the token*/
@@ -36,7 +36,7 @@ exit(EXIT_FAILURE);
 }
 
 token_count++;
-token = strtok(NULL, d);
+token = _strtok(NULL, d);
 }
 tokens[token_count] = NULL;
 
